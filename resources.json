@@ -1,0 +1,22 @@
+{
+  "grammaire": {
+    "title": "Chinese Grammar Wiki — toutes les structures grammaticales par niveau HSK",
+    "url": "https://resources.allsetlearning.com/chinese/grammar/"
+  },
+  "dictionnaire": {
+    "title": "MDBG — dictionnaire chinois-anglais en ligne (CC-CEDICT)",
+    "url": "https://www.mdbg.net/chinese/dictionary"
+  },
+  "traits": {
+    "title": "Ordre des traits (stroke order) pour n'importe quel caractère",
+    "url": "https://www.strokeorder.com/"
+  },
+  "hsk-officiel": {
+    "title": "Site officiel du Hanban/CTI pour s'inscrire et voir le format des examens HSK",
+    "url": "https://www.chinesetest.cn/"
+  },
+  "audio": {
+    "title": "Forvo — prononciation audio par des locuteurs natifs",
+    "url": "https://forvo.com/languages/zh/"
+  }
+}

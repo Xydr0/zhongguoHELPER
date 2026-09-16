@@ -53,6 +53,16 @@ def get_radicals() -> dict:
         return json.load(f)
 
 
+@lru_cache(maxsize=1)
+def get_sentences() -> dict:
+    with open(DATA_DIR / "sentences.json", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def sentences_for_level(level: int) -> list:
+    return get_sentences().get(str(level), [])
+
+
 def vocab_for_level(level: int) -> list:
     return get_vocab_hsk().get(str(level), [])
 

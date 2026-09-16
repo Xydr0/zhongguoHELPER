@@ -16,7 +16,7 @@ from data_loader import (
     vocab_for_level,
     word_of_the_day,
 )
-from db.database import all_wordoftheday_configs, init_db, set_wordoftheday_config
+from db.database import all_wordoftheday_configs, set_wordoftheday_config
 
 # Poste le mot du jour a 07h00 UTC (~ 8h/9h a Paris selon l'heure d'ete).
 WORD_OF_DAY_UTC_TIME = dtime(hour=7, minute=0)
@@ -53,7 +53,6 @@ def build_word_embed(word: dict, niveau, *, title: str, emoji: str) -> discord.E
 class Dictionary(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        init_db()
 
     async def cog_load(self):
         self.post_word_of_the_day.start()

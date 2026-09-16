@@ -4,8 +4,11 @@ import os
 from pathlib import Path
 
 import discord
+from aiohttp import web
 from discord.ext import commands
 from dotenv import load_dotenv
+
+from db.database import init_db
 
 load_dotenv()
 
@@ -16,6 +19,9 @@ logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("chinese-bot")
 
 intents = discord.Intents.default()
+# Necessaire pour que /frtcn et /cntfr puissent lire les reponses envoyees dans le salon.
+# A activer aussi dans le Developer Portal : Bot > Privileged Gateway Intents > Message Content Intent.
+intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -69,13 +75,30 @@ async def load_cogs():
             log.exception("Echec du chargement du cog : %s", extension)
 
 
+async def start_health_server():
+    """Petit serveur HTTP pour satisfaire Render (Web Service gratuit = un port doit repondre).
+    Sans effet en local : sert juste de cible pour un ping externe (UptimeRobot, cron-job.org...)
+    qui empeche le service Render de se mettre en veille apres 15 min d'inactivite HTTP.
+    """
+    port = int(os.getenv("PORT", "8080"))
+    app = web.Application()
+    app.router.add_get("/", lambda request: web.Response(text="chinese-bot en ligne"))
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    log.info("Serveur de sante demarre sur le port %d", port)
+
+
 async def main():
     if not TOKEN:
         raise SystemExit(
             "DISCORD_TOKEN manquant. Copie .env.example vers .env et renseigne ton token."
         )
+    init_db()
     async with bot:
         await load_cogs()
+        await start_health_server()
         await bot.start(TOKEN)
 
 
